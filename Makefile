@@ -7,6 +7,6 @@ run: build
 test: 
 	@go test ./... -v
 
-coverage:
-	@go test --coverfunc=c.out
+coverage: test
+	@go test --coverprofile=c.out ./peer2peer
 	@go tool cover -func=c.out
