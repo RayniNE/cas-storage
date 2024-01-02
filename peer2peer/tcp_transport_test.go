@@ -7,11 +7,15 @@ import (
 )
 
 func TestNewTCPTransport(t *testing.T) {
-	listenAddress := ":4000"
+	config := TCPTransportConfig{
+		ListenAddress: ":4000",
+		HandshakeFunc: NOPHandshakeFunc,
+		Decoder:       DefaultDecoder{},
+	}
 
-	transport := NewTCPTransport(listenAddress)
+	transport := NewTCPTransport(config)
 
-	assert.Equal(t, listenAddress, transport.listenAddress)
+	assert.Equal(t, config.ListenAddress, transport.ListenAddress)
 
 	assert.Nil(t, transport.ListenAndAccept())
 }
