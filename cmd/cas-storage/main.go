@@ -19,14 +19,20 @@ func init() {
 func main() {
 	LISTEN_ADDRESS := os.Getenv("LISTEN_ADDRESS")
 
-	tcpTransport := peer2peer.NewTCPTransport(fmt.Sprintf(":%s", LISTEN_ADDRESS))
+	config := peer2peer.TCPTransportConfig{
+		ListenAddress: fmt.Sprintf(":%s", LISTEN_ADDRESS),
+		HandshakeFunc: peer2peer.NOPHandshakeFunc,
+		Decoder:       peer2peer.DefaultDecoder{},
+	}
+
+	tcpTransport := peer2peer.NewTCPTransport(config)
 
 	err := tcpTransport.ListenAndAccept()
 	if err != nil {
 		panic(err)
 	}
 
-	log.Printf("Application started. Running on PORT: %s", LISTEN_ADDRESS)
+	log.Printf("Application started. Running on PORT: %s\n", LISTEN_ADDRESS)
 
 	select {}
 }
